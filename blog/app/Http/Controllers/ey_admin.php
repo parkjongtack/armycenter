@@ -42,11 +42,56 @@ class Ey_admin extends Controller
 
 	public function change_main_set(Request $request) {
 
+			if($request->learning1) {
+				$file = $request->learning1->store('images');
+				$file_array = explode("/", $file);
+				copy("../storage/app/images/".$file_array[1], "./storage/app/images/".$file_array[1]);
+			} else {
+				$file_array[1] = null;
+			}
+
+			if($request->learning2) {
+				$file = $request->learning2->store('images');
+				$file_array2 = explode("/", $file);
+				copy("../storage/app/images/".$file_array2[1], "./storage/app/images/".$file_array2[1]);
+			} else {
+				$file_array2[1] = null;
+			}
+
+			if($request->learning3) {
+				$file = $request->learning3->store('images');
+				$file_array3 = explode("/", $file);
+				copy("../storage/app/images/".$file_array3[1], "./storage/app/images/".$file_array3[1]);
+			} else {
+				$file_array3[1] = null;
+			}
+
+			if($request->learning4) {
+				$file = $request->learning4->store('images');
+				$file_array4 = explode("/", $file);
+				copy("../storage/app/images/".$file_array4[1], "./storage/app/images/".$file_array4[1]);
+			} else {
+				$file_array4[1] = null;
+			}
+
+			if($request->learning5) {
+				$file = $request->learning5->store('images');
+				$file_array5 = explode("/", $file);
+				copy("../storage/app/images/".$file_array5[1], "./storage/app/images/".$file_array5[1]);
+			} else {
+				$file_array5[1] = null;
+			}
+
 			DB::table('main_data_control')->update(
 				[
 					'people_cnt' => $request->people_cnt,
 					'd_day' => $request->d_day,
 					'km_set' => $request->km_set,
+					'learning1' => $file_array[1],
+					'learning2' => $file_array2[1],
+					'learning3' => $file_array3[1],
+					'learning4' => $file_array4[1],
+					'learning5' => $file_array5[1],
 				]
 			);
 
@@ -72,7 +117,7 @@ class Ey_admin extends Controller
 
 				session(['user_id' => $request->id]);
 
-				echo "<script>alert('로그인되었습니다.');location.href='/ey_admin/pcslider';</script>";
+				echo "<script>alert('로그인되었습니다.');location.href='/ey_admin/main_set';</script>";
 			} else {
 				echo "<script>alert('비밀번호가 잘못되었습니다.');location.href='/ey_admin/login';</script>";
 			}
@@ -101,6 +146,17 @@ class Ey_admin extends Controller
 	public function ey_logout(Request $request) {
 		$request->session()->flush();
 		echo "<script>alert('로그아웃 되었습니다.');location.href='/ey_admin/login';</script>";
+	}
+
+	public function data_modify(Request $request) {
+
+		DB::table('board')->where('idx', $request->idx)->update(
+			[
+				'use_status' => $request->use_status
+			]
+		);
+		
+		echo $request->use_status;
 	}
 
 	public function write_board_form(Request $request) {
@@ -446,9 +502,9 @@ class Ey_admin extends Controller
     public function ey_board_list(Request $request) {
 
 		if(request()->segment(2) != "main_set") {
-			$boardType = request()->segment(2);
+			$boardType = "armycenter";
 		} else {
-			$boardType = "main_set";
+			$boardType = "armycenter";
 		}
 
 		$paging_option = array(

@@ -52,14 +52,13 @@
                     <img class="mo_block" src="/img/m_sec1_img02.png" alt="">
                 </div>
                 <div class="dday_text">
-                    <p>D-33</p>
+                    <p>D-{{ $goal_day }}</p>
                 </div>
                 <div class="km_text">
                     <p>
-                        <span>2</span>
-                        <span>2</span>
-                        <span>2</span>
-                        <span>2</span>
+						@for($i=0;$i<=strlen($main_set->km_set);$i++)
+                        <span>{{ substr($main_set->km_set, $i, 1) }}</span>
+						@endfor
                     </p>
                 </div>
             </div>
@@ -75,36 +74,36 @@
             </div>
             <div class="sec_contents mo_none">
                 <div class="sec_img small">
-                    <img src="/img/sec2_img01.png" alt="">
+                    <img src="/storage/app/images/{{ $main_set->learning1 }}" alt="">
                 </div>
                 <div class="sec_img small">
-                    <img src="/img/sec2_img02.png" alt="">
+                    <img src="/storage/app/images/{{ $main_set->learning2 }}" alt="">
                 </div>
                 <div class="sec_img big">
-                    <img src="/img/sec2_img03.png" alt="">
+                    <img src="/storage/app/images/{{ $main_set->learning3 }}" alt="">
                 </div>
                 <div class="sec_img small">
-                    <img src="/img/sec2_img04.png" alt="">
+                    <img src="/storage/app/images/{{ $main_set->learning4 }}" alt="">
                 </div>
                 <div class="sec_img small">
-                    <img src="/img/sec2_img05.png" alt="">
+                    <img src="/storage/app/images/{{ $main_set->learning5 }}" alt="">
                 </div>
             </div>
             <div class="sec_contents mo_block">
                 <div class="sec_img big">
-                    <img src="/img/m_sec2_img01.png" alt="">
+                    <img src="/storage/app/images/{{ $main_set->learning3 }}" alt="">
                 </div>
                 <div class="sec_img small">
-                    <img src="/img/m_sec2_img02.png" alt="">
+                    <img src="/storage/app/images/{{ $main_set->learning1 }}" alt="">
                 </div>
                 <div class="sec_img small">
-                    <img src="/img/m_sec2_img03.png" alt="">
+                    <img src="/storage/app/images/{{ $main_set->learning2 }}" alt="">
                 </div>
                 <div class="sec_img small">
-                    <img src="/img/m_sec2_img04.png" alt="">
+                    <img src="/storage/app/images/{{ $main_set->learning3 }}" alt="">
                 </div>
                 <div class="sec_img small">
-                    <img src="/img/m_sec2_img05.png" alt="">
+                    <img src="/storage/app/images/{{ $main_set->learning4 }}" alt="">
                 </div>
             </div>
         </div>
@@ -170,20 +169,21 @@
                 <img class="mo_block" src="/img/m_sec4_title.png" alt="">
             </div>
             <div class="sec_contents transX">
-                <p class="all_cnt">총 <span class="blue">12,345</span>개의 댓글이 있습니다.</p>
-                <form action="">
+                <p class="all_cnt">총 <span class="blue">{{ number_format($board_count_set->cnt) }}</span>개의 댓글이 있습니다.</p>
+                <form method="post" action="/comment_action">
+		            {{ csrf_field() }}
                     <div class="textarea_outer">
-                        <textarea id="form_text" placeholder="마음까지 따뜻해지는 응원의 한마디를 남겨주세요!"></textarea>
+                        <textarea id="form_text" name="contents" placeholder="마음까지 따뜻해지는 응원의 한마디를 남겨주세요!" required></textarea>
                         <p class="lim_text">
                             <span>26</span>자/1,000자
                         </p>
                     </div>
                     <div class="flex_area">
                         <div class="left">
-                            <div class="input_text"><input type="text" placeholder="연락처를 입력해주세요! ( - 제외)"></div>
+                            <div class="input_text"><input type="text" name="tel" placeholder="연락처를 입력해주세요! ( - 제외)" required></div>
                             <div class="input_check">
-                                <p><label><input type="checkbox">개인정보 수집/이용에 동의합니다 </label><span id="see_tr01">[약관보기]</span></p>
-                                <p><label><input type="checkbox">개인정보 취급/위탁에 동의합니다 </label><span id="see_tr02">[약관보기]</span></p>
+                                <p><label><input type="checkbox" required>개인정보 수집/이용에 동의합니다 </label><span id="see_tr01">[약관보기]</span></p>
+                                <p><label><input type="checkbox" required>개인정보 취급/위탁에 동의합니다 </label><span id="see_tr02">[약관보기]</span></p>
                             </div>
                         </div>
                         <div class="right">
@@ -192,51 +192,17 @@
                     </div>
                 </form>
                 <ul>
+					@foreach($board_set as $board_set)
                     <li>
                         <div class="top">
                             <span>따뜻한 응원러&nbsp;&nbsp;|</span>
-                            <span>&nbsp;&nbsp;2020.01.01</span>
+                            <span>&nbsp;&nbsp;{{ str_replace("-", ".", substr($board_set->reg_date, 0, 10)) }}</span>
                         </div>
                         <div class="bot">
-                            <p>마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 </p>
+                            <p>{{ $board_set->contents }}</p>
                         </div>
                     </li>
-                    <li>
-                        <div class="top">
-                            <span>따뜻한 응원러&nbsp;&nbsp;|</span>
-                            <span>&nbsp;&nbsp;2020.01.01</span>
-                        </div>
-                        <div class="bot">
-                            <p>마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 </p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="top">
-                            <span>따뜻한 응원러&nbsp;&nbsp;|</span>
-                            <span>&nbsp;&nbsp;2020.01.01</span>
-                        </div>
-                        <div class="bot">
-                            <p>마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 </p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="top">
-                            <span>따뜻한 응원러&nbsp;&nbsp;|</span>
-                            <span>&nbsp;&nbsp;2020.01.01</span>
-                        </div>
-                        <div class="bot">
-                            <p>마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 </p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="top">
-                            <span>따뜻한 응원러&nbsp;&nbsp;|</span>
-                            <span>&nbsp;&nbsp;2020.01.01</span>
-                        </div>
-                        <div class="bot">
-                            <p>마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 마음까지 따뜻해지는 응원 </p>
-                        </div>
-                    </li>
+					@endforeach
                 </ul>
             </div>
             <div class="sec_contents2 transX">

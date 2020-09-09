@@ -32,6 +32,8 @@ class Main extends Controller
 		$board_set = DB::table('board') 
                     ->select(DB::raw('*'))
 					->where('use_status', 'Y')
+					->limit(5)
+					->orderby('idx','desc')
 					->get();
 		
 		$board_count_set = DB::table('board') 
